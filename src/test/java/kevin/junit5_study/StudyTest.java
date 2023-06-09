@@ -5,6 +5,8 @@ import org.junit.jupiter.api.*;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 class StudyTest {
     //springboot 2.2 버전 이상부터는 기본적으로 junit5 를 사용할수 있도록 의존성을 지원해줌.
@@ -39,8 +41,8 @@ class StudyTest {
     }
 
     @Test
-    @DisplayName("스터디 만들기 - 예외발생")
-    void create_exception(){
+    @DisplayName("스터디 만들기 - 예외발생, 실행기간 검증")
+    void create_exception_timeout(){
         //예외가 발생하는지 검증
         assertThrows(IllegalArgumentException.class, () -> new Study(StudyStatus.END, -10),"limit 1 미만으로 study 생성 시 IllegalArgumentException 발생해야한다.");
 
@@ -54,6 +56,32 @@ class StudyTest {
             Thread.sleep(300);
         },"Study 생성은 10ms 이내에 완료되어야 한다.");
     }
+
+    @Test
+    @DisplayName("스터디 만들기 - 5. 특정조건 만족시 테스트 실행")
+    void create_assume(){
+
+        String env = System.getenv("TEST_ENV");
+        System.out.println(env);
+        //아래 조건 만족시에만 아래 테스트 실행. (Local 환경변수 확인)
+        //assumeTrue("LOCAL".equalsIgnoreCase(env));
+
+        Study study = new Study(StudyStatus.END, 1);
+        assertNotNull(study);
+
+        //각 조건 만족시 마다 실행할 테스트들을 설정 할 수 있음.
+        assumingThat("LOCAL".equalsIgnoreCase(env), () -> {
+            System.out.println("local 테스트 실행");
+            assertNotNull(study);
+        });
+        assumingThat("DEV".equalsIgnoreCase(env), () -> {
+            System.out.println("dev 테스트 실행");
+            assertNotNull(study);
+        });
+    }
+
+
+
 
 
     @Test
