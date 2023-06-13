@@ -1,6 +1,8 @@
 package kevin.junit5_study;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.time.Duration;
 
@@ -32,7 +34,7 @@ class StudyTest {
         assertTrue(study.getLimit() > 0, "스터디의 limit 는 0보다 커야한다.");
         //위 방식은 이전 테스트에서 실패가 되면 다음 테스트는 실행하지 않음.
 
-        //실패여부 관계없이 각 테스트의 결과를 다 보려면 assertAll 사용
+        //실패여부 관계없이 각 테스트의 결과를 모두 다 보려면 assertAll 사용
         assertAll(
             () -> assertNotNull(study),
             () -> assertEquals(StudyStatus.DRAFT, study.getStudyStatus(), "스터디를 처음 만들면 상태값 DRAFT 여야함."),
@@ -58,12 +60,11 @@ class StudyTest {
     }
 
     @Test
-    @DisplayName("스터디 만들기 - 5. 특정조건 만족시 테스트 실행")
+    @DisplayName("스터디 만들기 - 환경변수 만족시 테스트 실행")
     void create_assume(){
-
         String env = System.getenv("TEST_ENV");
         System.out.println(env);
-        //아래 조건 만족시에만 아래 테스트 실행. (Local 환경변수 확인)
+        //아래 조건 만족시에만 아래 테스트 실행. (Local 환경변수 확인) - 환경변수 설정하는건 패스하자..
         //assumeTrue("LOCAL".equalsIgnoreCase(env));
 
         Study study = new Study(StudyStatus.END, 1);
@@ -79,9 +80,6 @@ class StudyTest {
             assertNotNull(study);
         });
     }
-
-
-
 
 
     @Test
