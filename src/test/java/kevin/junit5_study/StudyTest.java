@@ -3,6 +3,8 @@ package kevin.junit5_study;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Duration;
 
@@ -81,6 +83,37 @@ class StudyTest {
         });
     }
 
+    //내 인텔리제이 버전에서는 어떻게 태깅하여 실행하는 지모르겠음..!!
+    @Test
+    @DisplayName("스터디 만들기 - 태깅과 필터링 - 테스트를 그룹화 하여 특정그룹만 테스트실행 가능")
+    @Tag("fast")
+    void create_taging_fast(){
+        Study study = new Study(StudyStatus.END, 1);
+        assertNotNull(study);
+    }
+
+    @Test
+    @DisplayName("스터디 만들기 - 태깅과 필터링 - 테스트를 그룹화 하여 특정그룹만 테스트실행 가능")
+    @Tag("slow")
+    void create_taging_slow(){
+        Study study = new Study(StudyStatus.END, 1);
+        assertNotNull(study);
+    }
+
+    @DisplayName("스터디 만들기 - 테스트 반복실행하기")
+    @RepeatedTest(value = 10, name = "{displayName},{currentRepetition}/{totalRepetitions}") //cmd + p 를 누르면 어떤 파라미터를 입력할수 있는지 팝업뜸 꿀팁!!
+    void create_repeat(RepetitionInfo repetitionInfo){
+        Study study = new Study(StudyStatus.END, 1);
+        assertNotNull(study);
+        System.out.println("create_repeat + "+ repetitionInfo.getCurrentRepetition() + "/" + repetitionInfo.getTotalRepetitions());
+    }
+
+    @DisplayName("스터디 만들기 - 테스트 반복실행하기 - 반복시마다 다른 매개변수 사용하고싶다.")
+    @ParameterizedTest(name = "{index}-{displayName} message={0}")
+    @ValueSource(strings = {"조유리","송하영","박지원","홍만채"})
+    void create_repeat_parameterized(String message){
+        System.out.println(message); // "조유리","송하영","박지원","만채" 이 반복 실행된다.
+    }
 
     @Test
     @DisplayName("스터디 만들기1")
