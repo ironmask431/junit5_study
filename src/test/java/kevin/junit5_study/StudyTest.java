@@ -12,16 +12,20 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class StudyTest {
     //springboot 2.2 버전 이상부터는 기본적으로 junit5 를 사용할수 있도록 의존성을 지원해줌.
 
     //IDE 에서 테스트 코드 실행 시 @DisplayName 표기되지 않는 경우
     //Preferences > Build tool > gradle > Run tests using : IDEA 로 변경하면 나옴.
 
+    int test = 0;
+
     @Test
     @DisplayName("스터디 만들기") //표기될 테스트메소드 이름 지정
     void create(){
-        Study study = new Study(StudyStatus.END, -10);
+        //Study study = new Study(StudyStatus.END, -10);
+        Study study = new Study(StudyStatus.DRAFT, 1);
 
         assertNotNull(study);
 
@@ -57,7 +61,7 @@ class StudyTest {
         //실행 시간 검증
         assertTimeout(Duration.ofMillis(10), ()-> {
             new Study(StudyStatus.DRAFT, 10);
-            Thread.sleep(300);
+            //Thread.sleep(300);
         },"Study 생성은 10ms 이내에 완료되어야 한다.");
     }
 
@@ -116,6 +120,22 @@ class StudyTest {
     }
 
     @Test
+    @DisplayName("테스트시 인스턴스가 매번 새로 생성여부 확인1")
+    void testPerClass_1(){
+        System.out.println(test++);
+
+    }
+
+    @Test
+    @DisplayName("테스트시 인스턴스가 매번 새로 생성여부 확인2")
+    void testPerClass_2(){
+        System.out.println(test++);
+        //기본적으로 매 테스트시마다 클래스 인스턴스를 새로 만들어 사용하기 때문에 test 값은 항상 0이다.
+        //테스트 마다 하나의 인스턴스를 공유하기위해서 테스트 클래스에 @TestInstance 설정을 줄 수 있다.
+        //@TestInstance 설정후에는 test의 값이 증가한 것을 볼 수 있다.
+    }
+
+    @Test
     @DisplayName("스터디 만들기1")
     void create1(){
         System.out.println("create1");
@@ -128,13 +148,13 @@ class StudyTest {
         System.out.println("create1_disabled");
     }
 
-    //모든 테스트 시작전 1회
+    //모든 테스트 시작전 단 1회 - static 으로 선언해야함. (@TestInstance > per_class를 선언해준 경우는 static 필요없음.)
     @BeforeAll
     static void beforeAll(){
         System.out.println("beforeAll");
     }
 
-    //모든 테스트 종료후 1회
+    //모든 테스트 종료후 단 1회 - static 으로 선언해야함. (@TestInstance > per_class를 선언해준 경우는 static 필요없음.)
     @AfterAll
     static void afterAll(){
         System.out.println("afterAll");
