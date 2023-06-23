@@ -12,7 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS) //테스트 인스턴스의 라이프사이클 설정 (이 테스트클래스에서는 모든 테스트가 하나의 인스턴스를 공유)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class) //테스트에 순서를 주고자 할때
 class StudyTest {
     //springboot 2.2 버전 이상부터는 기본적으로 junit5 를 사용할수 있도록 의존성을 지원해줌.
 
@@ -23,6 +24,7 @@ class StudyTest {
 
     @Test
     @DisplayName("스터디 만들기") //표기될 테스트메소드 이름 지정
+    @Order(2) //테스트에 순서를 주고자 할때
     void create(){
         //Study study = new Study(StudyStatus.END, -10);
         Study study = new Study(StudyStatus.DRAFT, 1);
@@ -50,6 +52,7 @@ class StudyTest {
 
     @Test
     @DisplayName("스터디 만들기 - 예외발생, 실행기간 검증")
+    @Order(1) //테스트에 순서를 주고자 할때
     void create_exception_timeout(){
         //예외가 발생하는지 검증
         assertThrows(IllegalArgumentException.class, () -> new Study(StudyStatus.END, -10),"limit 1 미만으로 study 생성 시 IllegalArgumentException 발생해야한다.");
@@ -131,8 +134,8 @@ class StudyTest {
     void testPerClass_2(){
         System.out.println(test++);
         //기본적으로 매 테스트시마다 클래스 인스턴스를 새로 만들어 사용하기 때문에 test 값은 항상 0이다.
-        //테스트 마다 하나의 인스턴스를 공유하기위해서 테스트 클래스에 @TestInstance 설정을 줄 수 있다.
-        //@TestInstance 설정후에는 test의 값이 증가한 것을 볼 수 있다.
+        //테스트 마다 하나의 인스턴스를 공유하기위해서 테스트 클래스에 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+        //설정을 줄 수 있다. @TestInstance 설정후에는 test의 값이 증가한 것을 볼 수 있다.
     }
 
     @Test
