@@ -73,7 +73,7 @@ class StudyTest {
     void create_assume(){
         String env = System.getenv("TEST_ENV");
         System.out.println(env);
-        //아래 조건 만족시에만 아래 테스트 실행. (Local 환경변수 확인) - 환경변수 설정하는건 패스하자..
+        //assumeTrue = 아래 조건 만족시에만 아래 테스트 실행. (Local 환경변수 확인) - 환경변수 설정하는건 패스하자..
         //assumeTrue("LOCAL".equalsIgnoreCase(env));
 
         Study study = new Study(StudyStatus.END, 1);
@@ -135,7 +135,7 @@ class StudyTest {
         System.out.println(test++);
         //기본적으로 매 테스트시마다 클래스 인스턴스를 새로 만들어 사용하기 때문에 test 값은 항상 0이다.
         //테스트 마다 하나의 인스턴스를 공유하기위해서 테스트 클래스에 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-        //설정을 줄 수 있다. @TestInstance 설정후에는 test의 값이 증가한 것을 볼 수 있다.
+        //설정을 줄 수 있다. @TestInstance(TestInstance.Lifecycle.PER_CLASS) 설정후에는 test의 값이 증가한 것을 볼 수 있다.
     }
 
     @Test
@@ -144,7 +144,7 @@ class StudyTest {
         System.out.println("create1");
     }
 
-    //@Disabled = 테스트실행되지 않도록 할때.
+    //@Disabled = 테스트가 실행되지 않도록 할때.
     @Test
     @Disabled
     void create1_disabled(){
@@ -185,5 +185,16 @@ class StudyTest {
 //    afterEach
 //    afterAll
 
+
+    /** junit5 연습문제 풀이
+     (O) 1. @DisplayName
+     (X) 2. 3-junit platform
+     (O) 3. @Tag
+     (O) 4. assertAll
+     (X) 5. runTime
+     (O) 6. 2-Rule
+     (O) 7. PER_CLASS
+     (O) 8. @RepeatedTest
+     **/
 
 }
