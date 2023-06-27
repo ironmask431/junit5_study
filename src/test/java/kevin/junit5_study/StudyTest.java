@@ -194,7 +194,7 @@ class StudyTest {
      (X) 5. runTime
      (O) 6. 2-Rule
      (O) 7. PER_CLASS
-     (O) 8. @RepeatedTest
+     (X) 8. ??
      **/
 
 }
