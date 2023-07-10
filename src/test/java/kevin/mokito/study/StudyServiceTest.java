@@ -1,13 +1,18 @@
 package kevin.mokito.study;
 
+import kevin.mokito.domain.Member;
+import kevin.mokito.exception.MemberNotFoundException;
 import kevin.mokito.member.MemberService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 //방법2. @ExtendWith(MockitoExtension.class) 와 @Mock 애노테이션을 이용해 mock 객체를 만들 수 있다.
 @ExtendWith(MockitoExtension.class)
@@ -32,4 +37,36 @@ class StudyServiceTest {
 
         assertNotNull(studyService);
     }
+
+    /**
+     * mock 객체 stubbing
+     * 모든 mock 객체의 행동
+     * 1. null을 리턴한다.(Optional 은 Optional.empty리턴)
+     * 2. Primitive 타입은 모두 기본 Primitive 값.
+     * 3. 콜렉션은 비어있는 콜렉션
+     * 4. void 메소드는 예외를 던지지않고 아무런일도 발생하지 않음.
+     *
+     * mock 객체를 조작해서
+     * 1. 특정 매개변수를 받은 경우 특정값을 리턴하거나 예외를 던지게 만들 수 있다.
+     * 2. 메소드가 동일한 매개변수로 여러번 호출될때 각기 다르게 행동하도록 조작할 수 있다.
+     */
+    @Test
+    void mockStubbing() {
+
+        Member member = new Member(1L,"leesh@naver.com");
+        //mock객체 memberService.findById(1L) 실행 시 위에서 생성한 member를 리턴하도록 설정
+        when(memberService.findById(1L)).thenReturn(Optional.of(member));
+
+        Optional<Member> optional = memberService.findById(1L);
+
+        //같음을 알 수있다.
+        assertEquals(optional.get(), member);
+
+    }
+
+
+
+
+
+
 }
