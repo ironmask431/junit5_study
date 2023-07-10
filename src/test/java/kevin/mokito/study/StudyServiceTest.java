@@ -11,8 +11,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
 //방법2. @ExtendWith(MockitoExtension.class) 와 @Mock 애노테이션을 이용해 mock 객체를 만들 수 있다.
 @ExtendWith(MockitoExtension.class)
@@ -55,13 +56,23 @@ class StudyServiceTest {
 
         Member member = new Member(1L,"leesh@naver.com");
         //mock객체 memberService.findById(1L) 실행 시 위에서 생성한 member를 리턴하도록 설정
-        when(memberService.findById(1L)).thenReturn(Optional.of(member));
 
-        Optional<Member> optional = memberService.findById(1L);
+        // 방법1.
+        when(memberService.findById(1L)).thenReturn(Optional.of(member));
+        // 방법2.
+        //given(memberService.findById(any())).willReturn(Optional.of(member));
+
+        Optional<Member> findMember = memberService.findById(1L);
 
         //같음을 알 수있다.
-        assertEquals(optional.get(), member);
+        assertEquals(findMember.get().getEmail(), "leesh@naver.com");
 
+        //특정 메소드 + 매개변수 시 예외를 던지도록 stubbing
+        when(memberService.findById(1L)).thenThrow(new RuntimeException());
+        doThrow(new IllegalArgumentException()).when(memberService).validate(1L);
+
+        assertThrows(RuntimeException.class, () -> memberService.findById(1L));
+        assertThrows(IllegalArgumentException.class, () -> memberService.validate(1L));
     }
 
 
