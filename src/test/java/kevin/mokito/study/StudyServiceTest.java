@@ -1,6 +1,7 @@
 package kevin.mokito.study;
 
 import kevin.mokito.domain.Member;
+import kevin.mokito.domain.Study;
 import kevin.mokito.exception.MemberNotFoundException;
 import kevin.mokito.member.MemberService;
 import org.junit.jupiter.api.Test;
@@ -73,6 +74,33 @@ class StudyServiceTest {
 
         assertThrows(RuntimeException.class, () -> memberService.findById(1L));
         assertThrows(IllegalArgumentException.class, () -> memberService.validate(1L));
+    }
+
+    @Test
+    void mockStubbingTest() throws Exception {
+        //given
+        StudyService studyService = new StudyService(memberService, studyRepository);
+
+        Member member = new Member(1L,"leesh@naver.com");
+        Study study = new Study(10, "스터디테스트");
+
+        //stubbing
+        //todo. memberServcie.findById(1L) 하면 member 객체를 리턴하도록 stubbing
+        when(memberService.findById(1L)).thenReturn(Optional.of(member));
+
+        //todo. studyRepository.save(study) 하면 study 객체 그대로 리턴하도록 stubbing
+        when(studyRepository.save(study)).thenReturn(study);
+
+        //when
+        Study resultStudy = studyService.createNewStudy(1L, study);
+
+        //then
+        assertAll(
+            () -> assertNotNull(study),
+            () -> assertEquals(study.getOwner(), resultStudy.getOwner()),
+            () -> assertEquals(study.getLimit(), resultStudy.getLimit()),
+            () -> assertEquals(study.getName(), resultStudy.getName())
+        );
     }
 
 
