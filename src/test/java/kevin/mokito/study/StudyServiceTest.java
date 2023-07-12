@@ -6,6 +6,7 @@ import kevin.mokito.exception.MemberNotFoundException;
 import kevin.mokito.member.MemberService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -76,6 +77,9 @@ class StudyServiceTest {
         assertThrows(IllegalArgumentException.class, () -> memberService.validate(1L));
     }
 
+    /**
+     * mock 객체 stubbing 연습문제
+     */
     @Test
     void mockStubbingTest() throws Exception {
         //given
@@ -102,6 +106,40 @@ class StudyServiceTest {
             () -> assertEquals(study.getName(), resultStudy.getName())
         );
     }
+
+
+    /**
+     * mock verifying - mock 객체가 어떤 행동을 했는지 확인
+     */
+    @Test
+    void verifying() throws Exception {
+
+        //given
+        StudyService studyService = new StudyService(memberService, studyRepository);
+
+        Member member = new Member(1L,"leesh@naver.com");
+        Study study = new Study(10, "스터디테스트");
+
+        //stubbing
+        when(memberService.findById(1L)).thenReturn(Optional.of(member));
+        when(studyRepository.save(study)).thenReturn(study);
+
+        //when
+        Study resultStudy = studyService.createNewStudy(1L, study);
+
+        //memberService.notify() 가 1번 실행됐는지 검증
+        verify(memberService, times(1)).notify(study);
+        //memberService.validate() 가 실행되지 않았는지 검증
+        verify(memberService, never()).validate(any());
+
+        //메소드 호출 순서 검증
+        InOrder inOrder = inOrder(memberService);
+        inOrder.verify(memberService).notify(study);
+        inOrder.verify(memberService).notify(member);
+
+
+    }
+
 
 
 
