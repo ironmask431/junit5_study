@@ -1,8 +1,10 @@
 package kevin.mokito.study;
 
+import kevin.junit5_study.StudyStatus;
 import kevin.mokito.domain.Member;
 import kevin.mokito.domain.Study;
 import kevin.mokito.member.MemberService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
@@ -145,8 +147,30 @@ class StudyServiceTest {
         InOrder inOrder = inOrder(memberService);
         inOrder.verify(memberService).notify(study);
         inOrder.verify(memberService).notify(member);
+    }
 
+    @DisplayName("다른 사용자가 볼 수 있도록 스터디를 공개한다.")
+    @Test
+    void mokitoPractice(){
+        //given
+        StudyService studyService = new StudyService(memberService, studyRepository);
 
+        Study study = new Study(10, "더 자바, 테스트");
+
+        //todo. studyRepository Mock 객체의 save 메소드 호출 시 study 리턴하도록 만들기
+        given(studyRepository.save(study)).willReturn(study);
+
+        //when
+        studyService.openStudy(study);
+
+        //then
+        //todo. study의 status 가 OPENED  로 변경됬는지 확인
+        assertEquals(study.getStudyStatus(), StudyStatus.OPENED);
+        //todo. study의 openedDateTime 이 null이 아닌지 확인
+        assertNotNull(study.getOpenedDateTime());
+        //todo. memberService 의 notify(study)가 호출 됬는지 확인
+        verify(memberService, times(1)).notify(study);
+        then(memberService).should().notify(study);
     }
 
 
