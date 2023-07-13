@@ -2,7 +2,6 @@ package kevin.mokito.study;
 
 import kevin.mokito.domain.Member;
 import kevin.mokito.domain.Study;
-import kevin.mokito.exception.MemberNotFoundException;
 import kevin.mokito.member.MemberService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +14,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 
 //방법2. @ExtendWith(MockitoExtension.class) 와 @Mock 애노테이션을 이용해 mock 객체를 만들 수 있다.
@@ -124,11 +124,20 @@ class StudyServiceTest {
         when(memberService.findById(1L)).thenReturn(Optional.of(member));
         when(studyRepository.save(study)).thenReturn(study);
 
+        //when => given으로 변환 (BDD 스타일)
+        given(memberService.findById(1L)).willReturn(Optional.of(member));
+        given(studyRepository.save(study)).willReturn(study);
+
         //when
         Study resultStudy = studyService.createNewStudy(1L, study);
 
+        //then
         //memberService.notify() 가 1번 실행됐는지 검증
         verify(memberService, times(1)).notify(study);
+
+        //verify => then으로 변환 (BDD 스타일)
+        then(memberService).should(times(1)).notify(study);
+
         //memberService.validate() 가 실행되지 않았는지 검증
         verify(memberService, never()).validate(any());
 
