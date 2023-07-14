@@ -172,11 +172,4 @@ class StudyServiceTest {
         verify(memberService, times(1)).notify(study);
         then(memberService).should().notify(study);
     }
-
-
-
-
-
-
-
 }
