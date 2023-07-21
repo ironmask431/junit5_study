@@ -6,6 +6,9 @@ package kevin.jmeter_test;
  *
  * jmeter 다운로드 완료 (zip)
  * 실행파일경로 /bin/jmeter.sh
+ *
+ * 강의만 보고 실습은 생략!
  */
 public class jmeterTest {
+
 }
