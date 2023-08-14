@@ -1,13 +1,16 @@
-package kevin.mokito.study;
+package kevin.junit5_study.mokito.study;
 
 import kevin.junit5_study.StudyStatus;
 import kevin.mokito.domain.Member;
 import kevin.mokito.domain.Study;
 import kevin.mokito.member.MemberService;
+import kevin.mokito.study.StudyRepository;
+import kevin.mokito.study.StudyService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -29,6 +32,9 @@ class StudyServiceTest {
     @Mock
     StudyRepository studyRepository;
 
+    @InjectMocks
+    StudyService studyService;
+
     @Test
     void createStudyService(){
 
@@ -38,7 +44,10 @@ class StudyServiceTest {
 
         //StudyService 를 생성하는데 필요한 MemberService 와 StudyRepository 인터페이스 가 구현체가 없으므로 studyService 객체를 생성할 수가 없다.
         //이런 경우 mocking 을 해서 생성 할 수있다.
-        StudyService studyService = new StudyService(memberService, studyRepository);
+
+        //StudyService studyService = new StudyService(memberService, studyRepository);
+
+        //또는 위와같은 방법외에 mock 객체들을 주입받을 객체에 @InjectMocks 을 선언하는 방법도 있다.
 
         assertNotNull(studyService);
     }

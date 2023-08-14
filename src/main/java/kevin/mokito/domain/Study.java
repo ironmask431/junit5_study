@@ -3,7 +3,6 @@ package kevin.mokito.domain;
 import kevin.junit5_study.StudyStatus;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 

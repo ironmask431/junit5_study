@@ -12,7 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS) //테스트 인스턴스의 라이프사이클 설정 (이 테스트클래스에서는 모든 테스트가 하나의 인스턴스를 공유)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS) //테스트 인스턴스의 라이프사이클 설정
+// (이 테스트클래스에서는 모든 테스트가 하나의 인스턴스를 공유)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class) //테스트에 순서를 주고자 할때
 class StudyTest {
     //springboot 2.2 버전 이상부터는 기본적으로 junit5 를 사용할수 있도록 의존성을 지원해줌.
@@ -196,5 +197,4 @@ class StudyTest {
      (O) 7. PER_CLASS
      (X) 8. ??
      **/
-
 }
