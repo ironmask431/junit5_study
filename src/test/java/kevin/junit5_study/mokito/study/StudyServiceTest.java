@@ -22,23 +22,26 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 
-//방법2. @ExtendWith(MockitoExtension.class) 와 @Mock 애노테이션을 이용해 mock 객체를 만들 수 있다.
+//mock 객체 선언 방법2. @ExtendWith(MockitoExtension.class) 와 @Mock 애노테이션을 이용해 mock 객체를 만들 수 있다.
 @ExtendWith(MockitoExtension.class)
 class StudyServiceTest {
 
+    //@Mock = 어노테이션이 붙은 객체를 mock객체로 선언함.
     @Mock
     MemberService memberService;
 
     @Mock
     StudyRepository studyRepository;
 
+    //@InjectMocks = 어노테이션이 붙은 객체에 mock객체들을 주입한다.
     @InjectMocks
     StudyService studyService;
 
     @Test
+    @DisplayName("createStudyService")
     void createStudyService(){
 
-        //방법1. mock을 이용해 임의로 인터페이스의 가상 구현체를 만들 수 있다.
+        //mock 객체 선언 방법1. mock을 이용해 임의로 인터페이스의 가상 구현체를 만들 수 있다.
 //        MemberService memberService = mock(MemberService.class);
 //        StudyRepository studyRepository = mock(StudyRepository.class);
 
