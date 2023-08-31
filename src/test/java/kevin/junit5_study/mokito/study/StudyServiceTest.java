@@ -97,7 +97,7 @@ class StudyServiceTest {
     @Test
     void mockStubbingTest() throws Exception {
         //given
-        StudyService studyService = new StudyService(memberService, studyRepository);
+        //StudyService studyService = new StudyService(memberService, studyRepository);
 
         Member member = new Member(1L,"leesh@naver.com");
         Study study = new Study(10, "스터디테스트");
@@ -129,7 +129,7 @@ class StudyServiceTest {
     void verifying() throws Exception {
 
         //given
-        StudyService studyService = new StudyService(memberService, studyRepository);
+        //StudyService studyService = new StudyService(memberService, studyRepository);
 
         Member member = new Member(1L,"leesh@naver.com");
         Study study = new Study(10, "스터디테스트");
@@ -165,7 +165,7 @@ class StudyServiceTest {
     @Test
     void mokitoPractice(){
         //given
-        StudyService studyService = new StudyService(memberService, studyRepository);
+        //StudyService studyService = new StudyService(memberService, studyRepository);
 
         Study study = new Study(10, "더 자바, 테스트");
 
